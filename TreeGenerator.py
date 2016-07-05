@@ -164,17 +164,17 @@ def perform(level, box, options):
 				branchCell(cell)
 				continue
 			
-			if cell.type == 0 and random.randrange(0, tSplit) <= 0:
+			if cell.type == 0 and tSplit != 0 and random.randrange(0, tSplit) <= 0:
 				splitTrunk(cell)
 				continue
-			if cell.type == 0 and random.randrange(0, tCurve) <= 0:
+			if cell.type == 0 and tCurve != 0 and random.randrange(0, tCurve) <= 0:
 				curveCell(cell)
 				continue
-			if cell.type == 1 and random.randrange(0, bCurve) <= 0:
+			if cell.type == 1 and bCurve != 0 and random.randrange(0, bCurve) <= 0:
 				curveCell(cell)
 				continue
 			
-			if cell.type != 2 and random.randrange(0, bPercent) <= 0:
+			if cell.type != 2 and bPercent != 0 and random.randrange(0, bPercent) <= 0:
 				branchCell(cell)
 			if cell.type != 2 and lPercent != 0 and cell.age * lPercent <= tLife:
 				for i in xrange(0, lNum):
@@ -238,11 +238,16 @@ def perform(level, box, options):
 			except BreakIt:
 				pass
 		unusedStack.clear()
+		numWood = len(woodStack)
+		print(str(numWood) + " edge logs detected")
+		print("")
 		
 		print("Part 2/2 - Analyzing leaves")
 		leavesDict = {}
 		diagStack = set()
+		i = 1
 		for log in woodStack:
+			print(str(i) + " / " + str(numWood))
 			stack = [log]
 			leavesDict[log] = 0
 			while stack:
@@ -266,6 +271,8 @@ def perform(level, box, options):
 							else:
 								if level.blockAt(xx, yy, zz) in (18, 161):
 									diagStack.add(p)
+			i += 1
+		print("")
 		
 		print("Part 3/3 - Deleting decay-able leaves")
 		for p in leavesDict:
